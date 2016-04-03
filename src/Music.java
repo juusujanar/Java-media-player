@@ -3,10 +3,12 @@ public class Music {
 
     private String song_name;
     private String length;
+    protected String path;
 
-    Music(String song_name, String length){
+    Music(String song_name, String length, String path){
         this.song_name = song_name;
         this.length = length;
+        this.path = path;
     }
 
     public String getSong_name() {
