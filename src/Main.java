@@ -52,7 +52,7 @@ public class Main extends Application{
         Button stop = new Button("stop");
         stop.setOnAction(event -> player.stop());
         Slider time = new Slider();
-        Label volume = new Label("Volume:");
+        Label volume = new Label("Volume: ");
         Slider vol = new Slider();
 
         vol.setPrefWidth(100);
