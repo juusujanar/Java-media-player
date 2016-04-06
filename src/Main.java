@@ -54,7 +54,7 @@ public class Main extends Application{
         stop.setOnAction(event -> player.stop());
         Slider time = player.getTimeSlider();
         Label volume = new Label("Volume: ");
-        Slider vol = new Slider();
+        Slider vol = player.getVolSlider();
 
         vol.setPrefWidth(100);
         vol.setMinWidth(30);

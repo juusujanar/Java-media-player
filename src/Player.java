@@ -8,6 +8,7 @@ import javafx.scene.media.MediaPlayer;
 public class Player {
 
     Slider time;
+    Slider vol;
     MediaPlayer player;
 
     public void play(String path) {
@@ -24,18 +25,28 @@ public class Player {
             player = new MediaPlayer(new Media(path));
             player.play();
         }
+
         player.currentTimeProperty().addListener(new InvalidationListener() {        //For slider movements
             @Override
             public void invalidated(Observable observable) {
                 updateTimeSlider();
             }
         });
+
         time.valueProperty().addListener(new InvalidationListener() {
             @Override
             public void invalidated(Observable observable) {
                 if (time.isPressed()){
                     player.seek(player.getMedia().getDuration().multiply(time.getValue()/100));
                 }
+            }
+        });
+
+        vol.valueProperty().addListener(new InvalidationListener() {
+            @Override
+            public void invalidated(Observable observable){
+                if (vol.isPressed())
+                    player.setVolume(vol.getValue()/100);
             }
         });
     }
@@ -60,5 +71,10 @@ public class Player {
     protected Slider getTimeSlider(){
         time = new Slider();
         return time;
+    }
+
+    protected Slider getVolSlider(){
+        vol = new Slider();
+        return vol;
     }
 }
