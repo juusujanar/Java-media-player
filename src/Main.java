@@ -8,7 +8,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class Main extends Application{
@@ -16,6 +18,8 @@ public class Main extends Application{
     Stage window;
     Player player;
     TableView<Music> table;
+
+    ArrayList<File> watchFolders = new ArrayList<>();
 
     public static void main(String[] args){
         launch(args);
@@ -25,8 +29,6 @@ public class Main extends Application{
         window = primaryStage;
         window.setTitle("Mp3 player");
         player = new Player();
-
-        ArrayList<String> watchFolders = new ArrayList<>();
 
         BorderPane layout = new BorderPane();
         HBox MediaHbox = new HBox();
@@ -48,6 +50,7 @@ public class Main extends Application{
         //scan.setOnAction(event -> scanFolders());
         foldermenu.getItems().addAll(editFolder, scan);
 
+        // MENUBAR CREATION
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(filemenu, foldermenu);
         layout.setTop(menuBar);
@@ -100,6 +103,10 @@ public class Main extends Application{
         Scene scene = new Scene(layout, 800, 600);
         window.setScene(scene);
         window.show();
+
+        watchFolders.add(new File("C:\\Users\\Janar\\Desktop"));
+        ArrayList<String> files = scanFolder();
+        System.out.println(files);
     }
 
 
@@ -114,6 +121,25 @@ public class Main extends Application{
         ObservableList<Music> musicSelected = table.getSelectionModel().getSelectedItems();
         player.play(musicSelected.get(0).path);
     }
+
+    public ArrayList<String> scanFolder(){
+        ArrayList<String> music = new ArrayList<>();
+        for(File dir : watchFolders) {
+            try {
+                for (File file : dir.listFiles()) {
+                    if (file.getName().endsWith((".mp3"))) {
+                        music.add(file.getAbsolutePath());
+                    }
+                }
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return music;
+
+    }
+
 
 
 }
