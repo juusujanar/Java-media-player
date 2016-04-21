@@ -8,6 +8,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+
 
 public class Main extends Application{
 
@@ -24,19 +26,30 @@ public class Main extends Application{
         window.setTitle("Mp3 player");
         player = new Player();
 
+        ArrayList<String> watchFolders = new ArrayList<>();
+
         BorderPane layout = new BorderPane();
         HBox MediaHbox = new HBox();
         GridPane gridpane = new GridPane();
         gridpane.setPadding(new Insets(20, 10, 10, 10));
 
 
-        Menu filemenu = new Menu("File");                         //Making menubar
+        Menu filemenu = new Menu("File");                         //Making menus
         MenuItem addsongItem = new MenuItem("Add song");
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(event -> window.close());
         filemenu.getItems().addAll(addsongItem, exitItem);
+
+        // Folder menu for adding/editing/scanning watch folders
+        Menu foldermenu = new Menu("Folders");
+        MenuItem editFolder = new MenuItem("Edit watch folders");
+        MenuItem scan = new MenuItem("Scan folders");
+        //editFolder.setOnAction(event -> folderedit());
+        //scan.setOnAction(event -> scanFolders());
+        foldermenu.getItems().addAll(editFolder, scan);
+
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(filemenu);
+        menuBar.getMenus().addAll(filemenu, foldermenu);
         layout.setTop(menuBar);
         layout.setCenter(gridpane);
 
