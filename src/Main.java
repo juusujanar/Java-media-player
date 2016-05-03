@@ -18,6 +18,7 @@ public class Main extends Application{
     Stage window;
     Player player;
     TableView<Music> table;
+    public ObservableList<Music> music;
 
     ArrayList<File> watchFolders = new ArrayList<>();
 
@@ -80,7 +81,7 @@ public class Main extends Application{
         pause.setMinWidth(30);
         stop.setMinWidth(30);
 
-        MediaHbox.getChildren().addAll(play, pause, stop, time, volume, vol);;
+        MediaHbox.getChildren().addAll(play, pause, stop, time, volume, vol);
 
 
         table = new TableView<>();                        //making table
@@ -92,7 +93,7 @@ public class Main extends Application{
 
         TableColumn<Music, String> lengthcolumn = new TableColumn<>("Length");
         lengthcolumn.setMinWidth(50);
-        lengthcolumn.setCellValueFactory(new PropertyValueFactory<>("length"));
+        lengthcolumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
         table.getColumns().addAll(namecolumn, lengthcolumn);
         gridpane.setConstraints(table, 0, 1);
@@ -104,16 +105,16 @@ public class Main extends Application{
         window.setScene(scene);
         window.show();
 
-        watchFolders.add(new File("C:\\Users\\Janar\\Desktop"));
+        //watchFolders.add(new File("C:\\Users\\Janar\\Desktop"));
         ArrayList<String> files = scanFolder();
         System.out.println(files);
     }
 
 
     protected ObservableList<Music> getMusic(){
-        ObservableList<Music> music = FXCollections.observableArrayList();
-        music.add(new Music("Love story", "2.34", "file:///C:/Music/laul.mp3"));
-        music.add(new Music("MyHumps", "3.32", "file:///C:/Music/MyHumps.mp3"));
+        music = FXCollections.observableArrayList();
+        music.add(new Music("Love story", "file:///C:/Music/laul.mp3", table));
+        music.add(new Music("MyHumps", "file:///C:/Music/MyHumps.mp3", table));
         return music;
     }
 
@@ -137,7 +138,6 @@ public class Main extends Application{
             }
         }
         return music;
-
     }
 
 

@@ -1,22 +1,22 @@
+import javafx.scene.control.TableView;
 import javafx.scene.media.Media;
-import javafx.util.Duration;
+import javafx.scene.media.MediaPlayer;
 
-import javax.sound.sampled.AudioFileFormat;
-import javax.sound.sampled.AudioSystem;
-import java.io.File;
-import java.util.Map;
+public class Music implements Runnable{
 
-
-public class Music {
-
-    private String song_name;
-    private String duration;
+    protected String song_name;
+    protected String duration;
     protected String path;
+    MediaPlayer player;
+    TableView<Music> table;
+    String length;
 
-    Music(String song_name, String path) {
+    Music(String song_name, String path, TableView<Music> table) {
         this.song_name = song_name;
         this.path = path;
-        this.duration = getAudioDuration(path);
+        this.table = table;
+        player = new MediaPlayer(new Media(path));
+        player.setOnReady(this);
     }
 
     public String getSong_name() {
@@ -31,18 +31,23 @@ public class Music {
         return duration;
     }
 
-    public void setLength(String length) {
+    private void setLength(String length) {
         this.duration = length;
+        table.refresh();
     }
 
-    private String getAudioDuration(String path) {
-        File file = new File(path);
-        try {
-            AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
-            Map<?,?> properties = fileFormat.properties();
-            System.out.println(properties);
-            System.out.println(properties.get("duration"));
-        } catch (Exception ex){System.out.println(ex);};
-        return "2";
+    @Override
+    public void run() {
+        int time = (int) Math.round(player.getTotalDuration().toSeconds()); //time in seconds
+        int minutes = time / 60;
+        int seconds = time - 3 * 60;
+        System.out.println(minutes);
+        System.out.println(seconds);
+        StringBuilder sb = new StringBuilder();
+        sb.append(minutes);
+        sb.append(":");
+        sb.append(seconds);
+        length = sb.toString();
+        setLength(length);
     }
 }
