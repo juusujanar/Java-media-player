@@ -1,30 +1,59 @@
 import javafx.scene.control.TableView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.parser.mp3.Mp3Parser;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.helpers.DefaultHandler;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class Music implements Runnable{
 
-    protected String song_name;
+    protected String title;
+    protected String artist;
     protected String duration;
     protected String path;
     MediaPlayer player;
     TableView<Music> table;
     String length;
 
-    Music(String song_name, String path, TableView<Music> table) {
-        this.song_name = song_name;
+    Music(String path, TableView<Music> table) {
         this.path = path;
         this.table = table;
         player = new MediaPlayer(new Media(path));
         player.setOnReady(this);
+
+        try {
+            InputStream input = new FileInputStream(new File(path.substring(8)));
+            ContentHandler handler = new DefaultHandler();
+            Metadata metadata = new Metadata();
+            Parser parser = new Mp3Parser();
+            ParseContext parseCtx = new ParseContext();
+            parser.parse(input, handler, metadata, parseCtx);
+            input.close();
+            this.title = metadata.get("title");
+            this.artist = metadata.get("Author");
+        } catch (Exception e){e.printStackTrace();}
     }
 
-    public String getSong_name() {
-        return song_name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSong_name(String song_name) {
-        this.song_name = song_name;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
     }
 
     public String getDuration() {
@@ -41,8 +70,6 @@ public class Music implements Runnable{
         int time = (int) Math.round(player.getTotalDuration().toSeconds()); //time in seconds
         int minutes = time / 60;
         int seconds = time - 3 * 60;
-        System.out.println(minutes);
-        System.out.println(seconds);
         StringBuilder sb = new StringBuilder();
         sb.append(minutes);
         sb.append(":");

@@ -7,10 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class Main extends Application{
@@ -87,15 +85,19 @@ public class Main extends Application{
         table = new TableView<>();                        //making table
         table.setItems(getMusic());
 
-        TableColumn<Music, String> namecolumn = new TableColumn<>("Name");
-        namecolumn.setMinWidth(200);
-        namecolumn.setCellValueFactory(new PropertyValueFactory<>("song_name"));
+        TableColumn<Music, String> namecolumn = new TableColumn<>("Title");
+        namecolumn.setMinWidth(300);
+        namecolumn.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<Music, String> lengthcolumn = new TableColumn<>("Length");
+        TableColumn<Music, String> artistcolumn = new TableColumn<>("Artist");
+        artistcolumn.setMinWidth(300);
+        artistcolumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
+
+        TableColumn<Music, String> lengthcolumn = new TableColumn<>("Duration");
         lengthcolumn.setMinWidth(50);
         lengthcolumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
-        table.getColumns().addAll(namecolumn, lengthcolumn);
+        table.getColumns().addAll(namecolumn, artistcolumn, lengthcolumn);
         gridpane.setConstraints(table, 0, 1);
         gridpane.setConstraints(MediaHbox, 0, 0);
 
@@ -113,8 +115,8 @@ public class Main extends Application{
 
     protected ObservableList<Music> getMusic(){
         music = FXCollections.observableArrayList();
-        music.add(new Music("Love story", "file:///C:/Music/laul.mp3", table));
-        music.add(new Music("MyHumps", "file:///C:/Music/MyHumps.mp3", table));
+        music.add(new Music("file:///C:/Music/laul.mp3", table));
+        music.add(new Music("file:///C:/Music/MyHumps.mp3", table));
         return music;
     }
 
