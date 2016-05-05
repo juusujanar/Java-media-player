@@ -35,7 +35,15 @@ public class Music implements Runnable{
             ParseContext parseCtx = new ParseContext();
             parser.parse(input, handler, metadata, parseCtx);
             input.close();
-            this.title = metadata.get("title");
+            if (metadata.get("title")==null || metadata.get("title")=="") {
+                String file_name = path;
+                while (file_name.indexOf("/") >= 0) {
+                    int index = file_name.indexOf("/");
+                    file_name = file_name.substring(index + 1);
+                }
+                this.title = file_name.substring(0, file_name.length() - 4);
+            } else
+                this.title = metadata.get("title");
             this.artist = metadata.get("Author");
         } catch (Exception e){e.printStackTrace();}
     }

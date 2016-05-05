@@ -115,6 +115,7 @@ public class Main extends Application{
 
     protected ObservableList<Music> getMusic(){
         music = FXCollections.observableArrayList();
+        music.add(new Music("file:///C:/Music/years.mp3", table));
         music.add(new Music("file:///C:/Music/laul.mp3", table));
         music.add(new Music("file:///C:/Music/MyHumps.mp3", table));
         return music;
