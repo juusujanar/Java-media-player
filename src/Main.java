@@ -29,7 +29,7 @@ public class Main extends Application{
         window.setTitle("Mp3 player");
         player = new Player();
 
-        BorderPane layout = new BorderPane();
+        VBox layout = new VBox();
         HBox MediaHbox = new HBox();
         GridPane gridpane = new GridPane();
         gridpane.setPadding(new Insets(20, 10, 10, 10));
@@ -52,13 +52,12 @@ public class Main extends Application{
         // MENUBAR CREATION
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(filemenu, foldermenu);
-        layout.setTop(menuBar);
-        layout.setCenter(gridpane);
-
+        layout.getChildren().addAll(menuBar, gridpane);
         ColumnConstraints columnConstraints = new ColumnConstraints();  // Making table scalable
         columnConstraints.setFillWidth(true);
-        columnConstraints.setHgrow(Priority.ALWAYS);
+        columnConstraints.setHgrow(Priority.ALWAYS);;
         gridpane.getColumnConstraints().add(columnConstraints);
+
 
 
         Button play = new Button("play");                       // Making MediaBar
@@ -84,6 +83,7 @@ public class Main extends Application{
 
         table = new TableView<>();                        //making table
         table.setItems(getMusic());
+        table.setPrefSize(600, 2000);
 
         TableColumn<Music, String> namecolumn = new TableColumn<>("Title");
         namecolumn.setMinWidth(300);
@@ -142,7 +142,5 @@ public class Main extends Application{
         }
         return music;
     }
-
-
 
 }
