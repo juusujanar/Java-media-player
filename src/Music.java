@@ -13,10 +13,10 @@ import java.io.InputStream;
 
 public class Music implements Runnable{
 
-    protected String title;
-    protected String artist;
-    protected String duration;
-    protected String path;
+    private String title;
+    private String artist;
+    private String duration;
+    private String path;
     MediaPlayer player;
     TableView<Music> table;
     String length;
@@ -66,6 +66,10 @@ public class Music implements Runnable{
 
     public String getDuration() {
         return duration;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     private void setLength(String length) {

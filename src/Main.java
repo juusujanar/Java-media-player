@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
@@ -27,13 +28,18 @@ public class Main extends Application{
     public void start(Stage primaryStage) {
         window = primaryStage;
         window.setTitle("Mp3 player");
-        player = new Player();
+        HBox infoHbox = new HBox();
+        Label currently_playing = new Label("Enjoy your music");
+        currently_playing.setFont(new Font(20));
+        infoHbox.getChildren().add(currently_playing);
+        player = new Player(currently_playing, table);
 
         VBox layout = new VBox();
         HBox MediaHbox = new HBox();
         GridPane gridpane = new GridPane();
         gridpane.setPadding(new Insets(20, 10, 10, 10));
-
+        gridpane.setVgap(5);
+        gridpane.setHgap(20);
 
         Menu filemenu = new Menu("File");                         //Making menus
         MenuItem addsongItem = new MenuItem("Add song");
@@ -98,11 +104,12 @@ public class Main extends Application{
         lengthcolumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
 
         table.getColumns().addAll(namecolumn, artistcolumn, lengthcolumn);
-        gridpane.setConstraints(table, 0, 1);
-        gridpane.setConstraints(MediaHbox, 0, 0);
+        gridpane.setConstraints(table, 0, 2);
+        gridpane.setConstraints(MediaHbox, 0, 1);
+        gridpane.setConstraints(infoHbox, 0, 0);
 
 
-        gridpane.getChildren().addAll(MediaHbox, table);   //showing window
+        gridpane.getChildren().addAll(MediaHbox, table, infoHbox);   //showing window
         Scene scene = new Scene(layout, 800, 600);
         window.setScene(scene);
         window.show();
@@ -122,8 +129,8 @@ public class Main extends Application{
     }
 
     private void start_playing() {
-        ObservableList<Music> musicSelected = table.getSelectionModel().getSelectedItems();
-        player.play(musicSelected.get(0).path);
+        Music musicSelected = table.getSelectionModel().getSelectedItems().get(0);
+        player.play(musicSelected.getPath(), musicSelected.getTitle(), musicSelected.getArtist());
     }
 
     public ArrayList<String> scanFolder(){
