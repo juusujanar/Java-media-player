@@ -32,7 +32,9 @@ public class Main extends Application{
         Label currently_playing = new Label("Enjoy your music");
         currently_playing.setFont(new Font(20));
         infoHbox.getChildren().add(currently_playing);
+        table = new TableView<>();
         player = new Player(currently_playing, table);
+
 
         VBox layout = new VBox();
         HBox MediaHbox = new HBox();
@@ -87,8 +89,7 @@ public class Main extends Application{
         MediaHbox.getChildren().addAll(play, pause, stop, time, volume, vol);
 
 
-        table = new TableView<>();                        //making table
-        table.setItems(getMusic());
+        table.setItems(getMusic());        //making the table
         table.setPrefSize(600, 2000);
 
         TableColumn<Music, String> namecolumn = new TableColumn<>("Title");
@@ -130,7 +131,14 @@ public class Main extends Application{
 
     private void start_playing() {
         Music musicSelected = table.getSelectionModel().getSelectedItems().get(0);
-        player.play(musicSelected.getPath(), musicSelected.getTitle(), musicSelected.getArtist());
+        int index = 0;
+        for (Object item : table.getItems()){
+            if (item == musicSelected)
+                break;
+            else
+                index++;
+        }
+        player.play(musicSelected.getPath(), musicSelected.getTitle(), musicSelected.getArtist(), index);
     }
 
     public ArrayList<String> scanFolder(){

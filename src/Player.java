@@ -1,14 +1,12 @@
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-public class Player {
+
+public class Player implements Runnable{
 
     private Slider time;
     private Slider vol;
@@ -17,6 +15,7 @@ public class Player {
     private TableView<Music> table;
     private String title;
     private String artist;
+    private int song_index;
 
 
     Player(Label currently_playing, TableView<Music> table) {
@@ -24,12 +23,13 @@ public class Player {
         this.table = table;
     }
 
-    public void play(String path, String title, String artist) {
+    public void play(String path, String title, String artist, int song_index) {
         try {
             MediaPlayer.Status status = player.getStatus();
             if (player.getStatus() != MediaPlayer.Status.PAUSED) {
                 this.title = title;
                 this.artist = artist;
+                this.song_index = song_index;
             }
             if (status == MediaPlayer.Status.PAUSED) {
                 player.play();
@@ -41,10 +41,12 @@ public class Player {
         } catch (Exception ex) {       //comes here if there is no status yet
             this.title = title;
             this.artist = artist;
+            this.song_index = song_index;
             player = new MediaPlayer(new Media(path));
             player.play();
         }
         set_playing_text();
+        player.setOnEndOfMedia(this);
 
 
         player.currentTimeProperty().addListener(new InvalidationListener() {        //For slider movements
@@ -114,5 +116,16 @@ public class Player {
             currently_playing.setText("Currently playing:   " + title);
         else
             currently_playing.setText("Currently playing:   " + title + " - " + artist);
+    }
+
+    public void run(){
+        Music next_song;
+        try {
+            next_song = table.getItems().get(song_index + 1);
+        } catch (IndexOutOfBoundsException e){
+            next_song = table.getItems().get(0);
+            song_index = -1;
+        }
+        play(next_song.getPath(), next_song.getTitle(), next_song.getArtist(), song_index+1);
     }
 }
