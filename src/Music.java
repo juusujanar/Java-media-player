@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-public class Music implements Runnable{
+public class Music implements Runnable {
 
     private String title;
     private String artist;
@@ -36,32 +36,23 @@ public class Music implements Runnable{
             parser.parse(input, handler, metadata, parseCtx);
             input.close();
             if (metadata.get("title")==null || metadata.get("title")=="") {
-                String file_name = path;
-                while (file_name.indexOf("/") >= 0) {
-                    int index = file_name.indexOf("/");
-                    file_name = file_name.substring(index + 1);
+                while (path.indexOf("/") >= 0) {
+                    int index = path.indexOf("/");
+                    path = path.substring(index + 1);
                 }
-                this.title = file_name.substring(0, file_name.length() - 4);
+                this.title = path.substring(0, path.length() - 4);
             } else
                 this.title = metadata.get("title");
             this.artist = metadata.get("Author");
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e)   {  e.printStackTrace();    }
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getArtist() {
         return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
     }
 
     public String getDuration() {

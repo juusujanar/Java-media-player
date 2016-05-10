@@ -49,28 +49,19 @@ public class Player implements Runnable{
         player.setOnEndOfMedia(this);
 
 
-        player.currentTimeProperty().addListener(new InvalidationListener() {        //For slider movements
-            @Override
-            public void invalidated(Observable observable) {
-                updateTimeSlider();
+        player.currentTimeProperty().addListener(observable -> {
+            updateTimeSlider();
+        });
+
+        time.valueProperty().addListener(observable -> {
+            if (time.isPressed()){
+                player.seek(player.getMedia().getDuration().multiply(time.getValue()/100));
             }
         });
 
-        time.valueProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                if (time.isPressed()){
-                    player.seek(player.getMedia().getDuration().multiply(time.getValue()/100));
-                }
-            }
-        });
-
-        vol.valueProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable){
-                if (vol.isPressed())
-                    player.setVolume(vol.getValue()/100);
-            }
+        vol.valueProperty().addListener(observable -> {
+            if (vol.isPressed())
+                player.setVolume(vol.getValue()/100);
         });
     }
 
@@ -94,11 +85,7 @@ public class Player implements Runnable{
     }
 
     private void updateTimeSlider(){
-        Platform.runLater(new Runnable(){
-            public void run(){
-                time.setValue(player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis() * 100);
-            }
-        });
+        Platform.runLater(() -> time.setValue(player.getCurrentTime().toMillis() / player.getTotalDuration().toMillis() * 100));
     }
 
     protected Slider getTimeSlider(){

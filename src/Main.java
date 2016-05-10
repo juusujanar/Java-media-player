@@ -17,9 +17,9 @@ public class Main extends Application{
     Stage window;
     Player player;
     TableView<Music> table;
-    public ObservableList<Music> music;
+    public ObservableList<Music> music = FXCollections.observableArrayList();
 
-    ArrayList<File> watchFolders = new ArrayList<>();
+    ArrayList<String> watchFolders = new ArrayList<>();
 
     public static void main(String[] args){
         launch(args);
@@ -27,6 +27,7 @@ public class Main extends Application{
 
     public void start(Stage primaryStage) {
         window = primaryStage;
+<<<<<<< HEAD
         window.setTitle("Mp3 player");
         HBox infoHbox = new HBox();
         Label currently_playing = new Label("Enjoy your music");
@@ -35,6 +36,10 @@ public class Main extends Application{
         table = new TableView<>();
         player = new Player(currently_playing, table);
 
+=======
+        window.setTitle("Music player");
+        player = new Player();
+>>>>>>> f4c68e75d2bb6aa49b2e2a53070669107db4294c
 
         VBox layout = new VBox();
         HBox MediaHbox = new HBox();
@@ -110,19 +115,25 @@ public class Main extends Application{
         gridpane.setConstraints(infoHbox, 0, 0);
 
 
+<<<<<<< HEAD
         gridpane.getChildren().addAll(MediaHbox, table, infoHbox);   //showing window
+=======
+        gridpane.getChildren().addAll(MediaHbox, table);   // showing window
+>>>>>>> f4c68e75d2bb6aa49b2e2a53070669107db4294c
         Scene scene = new Scene(layout, 800, 600);
         window.setScene(scene);
         window.show();
 
-        //watchFolders.add(new File("C:\\Users\\Janar\\Desktop"));
-        ArrayList<String> files = scanFolder();
-        System.out.println(files);
+        /*
+        watchFolders.add("C:\\Users\\Janar\\Desktop");
+        watchFolders.add("C:\\Users\\Janar\\Music");
+        ArrayList<Music> files = scanFolder();
+        System.out.println(files); */
     }
 
 
     protected ObservableList<Music> getMusic(){
-        music = FXCollections.observableArrayList();
+
         music.add(new Music("file:///C:/Music/years.mp3", table));
         music.add(new Music("file:///C:/Music/laul.mp3", table));
         music.add(new Music("file:///C:/Music/MyHumps.mp3", table));
@@ -141,13 +152,16 @@ public class Main extends Application{
         player.play(musicSelected.getPath(), musicSelected.getTitle(), musicSelected.getArtist(), index);
     }
 
-    public ArrayList<String> scanFolder(){
-        ArrayList<String> music = new ArrayList<>();
-        for(File dir : watchFolders) {
+    public ArrayList<Music> scanFolder(){
+        ArrayList<Music> files = new ArrayList<>();
+        for(String path : watchFolders) {
             try {
-                for (File file : dir.listFiles()) {
+                File directory = new File(path);
+                for (File file : directory.listFiles()) {
                     if (file.getName().endsWith((".mp3"))) {
-                        music.add(file.getAbsolutePath());
+                        System.out.println(file.toURI().toURL());
+                        System.out.println(file.getCanonicalPath());
+                        files.add(new Music(file.toURI().toURL().toString(), table));
                     }
                 }
             }
@@ -155,7 +169,7 @@ public class Main extends Application{
                 e.printStackTrace();
             }
         }
-        return music;
+        return files;
     }
 
 }
