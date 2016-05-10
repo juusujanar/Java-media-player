@@ -118,32 +118,44 @@ public class Main extends Application{
         window.setScene(scene);
         window.show();
 
-        /*
-        watchFolders.add("C:\\Users\\Janar\\Desktop");
-        watchFolders.add("C:\\Users\\Janar\\Music");
+
+        watchFolders.add("/home/janar/Music");
         ArrayList<Music> files = scanFolder();
-        System.out.println(files); */
+        System.out.println(files);
     }
 
 
     protected ObservableList<Music> getMusic(){
 
+        /*
         music.add(new Music("file:///C:/Music/years.mp3", table));
         music.add(new Music("file:///C:/Music/laul.mp3", table));
         music.add(new Music("file:///C:/Music/MyHumps.mp3", table));
+        */
+
         return music;
     }
 
     private void start_playing() {
-        Music musicSelected = table.getSelectionModel().getSelectedItems().get(0);
-        int index = 0;
-        for (Object item : table.getItems()){
-            if (item == musicSelected)
-                break;
-            else
-                index++;
+        try {
+            Music musicSelected = table.getSelectionModel().getSelectedItems().get(0);
+            int index = 0;
+            for (Object item : table.getItems()){
+                if (item == musicSelected)
+                    break;
+                else
+                    index++;
+            }
+            player.play(musicSelected.getPath(), musicSelected.getTitle(), musicSelected.getArtist(), index);
         }
-        player.play(musicSelected.getPath(), musicSelected.getTitle(), musicSelected.getArtist(), index);
+        catch (NullPointerException e) {
+            System.out.println("No music file is selected.");
+        }
+        catch (Exception e) {
+            System.out.println("Something else went wrong. Printing stack trace.");
+            e.printStackTrace();
+        }
+
     }
 
     public ArrayList<Music> scanFolder(){

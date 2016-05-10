@@ -4,6 +4,7 @@ import javafx.beans.Observable;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import org.apache.commons.lang.ObjectUtils;
 
 
 public class Player implements Runnable{
