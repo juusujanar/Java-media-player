@@ -76,7 +76,7 @@ public class Music implements Runnable {
     public void run() {
         int time = (int) Math.round(player.getTotalDuration().toSeconds()); //time in seconds
         int minutes = time / 60;
-        int seconds = time - 3 * 60;
+        int seconds = time - minutes * 60;
         StringBuilder sb = new StringBuilder();
         sb.append(minutes);
         sb.append(":");
