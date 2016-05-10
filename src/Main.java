@@ -123,7 +123,7 @@ public class Main extends Application{
 
     protected ObservableList<Music> getMusic(){
 
-        watchFolders.add("/home/janar/Music");
+        //watchFolders.add("/home/janar/Music");
         scanFolder();
 
         return music;
