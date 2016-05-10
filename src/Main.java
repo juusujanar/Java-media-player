@@ -27,8 +27,7 @@ public class Main extends Application{
 
     public void start(Stage primaryStage) {
         window = primaryStage;
-<<<<<<< HEAD
-        window.setTitle("Mp3 player");
+
         HBox infoHbox = new HBox();
         Label currently_playing = new Label("Enjoy your music");
         currently_playing.setFont(new Font(20));
@@ -36,10 +35,7 @@ public class Main extends Application{
         table = new TableView<>();
         player = new Player(currently_playing, table);
 
-=======
         window.setTitle("Music player");
-        player = new Player();
->>>>>>> f4c68e75d2bb6aa49b2e2a53070669107db4294c
 
         VBox layout = new VBox();
         HBox MediaHbox = new HBox();
@@ -115,11 +111,9 @@ public class Main extends Application{
         gridpane.setConstraints(infoHbox, 0, 0);
 
 
-<<<<<<< HEAD
+
         gridpane.getChildren().addAll(MediaHbox, table, infoHbox);   //showing window
-=======
-        gridpane.getChildren().addAll(MediaHbox, table);   // showing window
->>>>>>> f4c68e75d2bb6aa49b2e2a53070669107db4294c
+
         Scene scene = new Scene(layout, 800, 600);
         window.setScene(scene);
         window.show();
