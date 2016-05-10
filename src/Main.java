@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class Main extends Application{
         gridpane.setVgap(5);
         gridpane.setHgap(20);
 
-        Menu filemenu = new Menu("File");                         //Making menus
+        Menu filemenu = new Menu("File");                         // Making menus
         MenuItem addsongItem = new MenuItem("Add song");
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(event -> window.close());
@@ -54,8 +55,8 @@ public class Main extends Application{
         Menu foldermenu = new Menu("Folders");
         MenuItem editFolder = new MenuItem("Edit watch folders");
         MenuItem scan = new MenuItem("Scan folders");
-        //editFolder.setOnAction(event -> folderedit());
-        //scan.setOnAction(event -> scanFolders());
+        editFolder.setOnAction(event -> addFolder());
+        scan.setOnAction(event -> scanFolder());
         foldermenu.getItems().addAll(editFolder, scan);
 
         // MENUBAR CREATION
@@ -66,7 +67,6 @@ public class Main extends Application{
         columnConstraints.setFillWidth(true);
         columnConstraints.setHgrow(Priority.ALWAYS);;
         gridpane.getColumnConstraints().add(columnConstraints);
-
 
 
         Button play = new Button("play");                       // Making MediaBar
@@ -90,7 +90,7 @@ public class Main extends Application{
         MediaHbox.getChildren().addAll(play, pause, stop, time, volume, vol);
 
 
-        table.setItems(getMusic());        //making the table
+        table.setItems(getMusic());        // making the table
         table.setPrefSize(600, 2000);
 
         TableColumn<Music, String> namecolumn = new TableColumn<>("Title");
@@ -110,15 +110,13 @@ public class Main extends Application{
         gridpane.setConstraints(MediaHbox, 0, 1);
         gridpane.setConstraints(infoHbox, 0, 0);
 
-
-
         gridpane.getChildren().addAll(MediaHbox, table, infoHbox);   //showing window
 
         Scene scene = new Scene(layout, 800, 600);
         window.setScene(scene);
         window.show();
 
-    }
+        }
 
 
     protected ObservableList<Music> getMusic(){
@@ -169,6 +167,16 @@ public class Main extends Application{
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    public void addFolder() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Adding music folder");
+        File file = directoryChooser.showDialog(null);
+        if (file != null) {
+            watchFolders.add(file.toString());
+            scanFolder();
         }
     }
 
