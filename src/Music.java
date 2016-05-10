@@ -10,7 +10,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URI;
 
 public class Music implements Runnable {
 
