@@ -10,6 +10,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URI;
 
 public class Music implements Runnable {
 
@@ -17,27 +18,29 @@ public class Music implements Runnable {
     private String artist;
     private String duration;
     private String path;
+    private String uri;
     MediaPlayer player;
     TableView<Music> table;
     String length;
 
-    Music(String path, TableView<Music> table) {
+    Music(String path, String fullpath, TableView<Music> table) {
         this.path = path;
+        this.uri = fullpath;
         this.table = table;
-        player = new MediaPlayer(new Media(path));
+        player = new MediaPlayer(new Media(fullpath));
         player.setOnReady(this);
 
         try {
-            InputStream input = new FileInputStream(new File(path.substring(8)));
+            InputStream input = new FileInputStream(new File(path));
             ContentHandler handler = new DefaultHandler();
             Metadata metadata = new Metadata();
             Parser parser = new Mp3Parser();
             ParseContext parseCtx = new ParseContext();
             parser.parse(input, handler, metadata, parseCtx);
             input.close();
-            if (metadata.get("title")==null || metadata.get("title")=="") {
-                while (path.indexOf("/") >= 0) {
-                    int index = path.indexOf("/");
+            if (metadata.get("title")==null || metadata.get("title").equals("")) {
+                int index;
+                while ((index = path.indexOf("/")) >= 0) {
                     path = path.substring(index + 1);
                 }
                 this.title = path.substring(0, path.length() - 4);
@@ -62,6 +65,8 @@ public class Music implements Runnable {
     public String getPath() {
         return path;
     }
+
+    public String getURI() { return uri; }
 
     private void setLength(String length) {
         this.duration = length;

@@ -8,7 +8,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.apache.commons.lang.ObjectUtils;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 
@@ -118,20 +121,13 @@ public class Main extends Application{
         window.setScene(scene);
         window.show();
 
-
-        watchFolders.add("/home/janar/Music");
-        ArrayList<Music> files = scanFolder();
-        System.out.println(files);
     }
 
 
     protected ObservableList<Music> getMusic(){
 
-        /*
-        music.add(new Music("file:///C:/Music/years.mp3", table));
-        music.add(new Music("file:///C:/Music/laul.mp3", table));
-        music.add(new Music("file:///C:/Music/MyHumps.mp3", table));
-        */
+        watchFolders.add("/home/janar/Music");
+        scanFolder();
 
         return music;
     }
@@ -146,7 +142,7 @@ public class Main extends Application{
                 else
                     index++;
             }
-            player.play(musicSelected.getPath(), musicSelected.getTitle(), musicSelected.getArtist(), index);
+            player.play(musicSelected.getURI(), musicSelected.getTitle(), musicSelected.getArtist(), index);
         }
         catch (NullPointerException e) {
             System.out.println("No music file is selected.");
@@ -158,24 +154,25 @@ public class Main extends Application{
 
     }
 
-    public ArrayList<Music> scanFolder(){
-        ArrayList<Music> files = new ArrayList<>();
+    public void scanFolder(){
         for(String path : watchFolders) {
             try {
                 File directory = new File(path);
                 for (File file : directory.listFiles()) {
                     if (file.getName().endsWith((".mp3"))) {
-                        System.out.println(file.toURI().toURL());
-                        System.out.println(file.getCanonicalPath());
-                        files.add(new Music(file.toURI().toURL().toString(), table));
+                        music.add(new Music(file.getAbsolutePath(), file.toURI().toURL().toExternalForm(), table));
                     }
                 }
             }
+            catch (NullPointerException e) {
+                System.out.println("One of the folders was not found: " + watchFolders.toString());
+            }
             catch (Exception e) {
+                System.out.println("Application just threw up. Better find someone to clean it up.");
                 e.printStackTrace();
             }
+
         }
-        return files;
     }
 
 }
