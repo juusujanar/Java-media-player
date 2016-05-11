@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
@@ -37,6 +38,7 @@ public class Main extends Application{
         player = new Player(currently_playing, table);
 
         window.setTitle("Music player");
+        window.getIcons().add(new Image("file:mylogo.jpg"));
 
         VBox layout = new VBox();
         HBox MediaHbox = new HBox();
