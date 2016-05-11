@@ -60,8 +60,8 @@ public class Main extends Application{
 
         // Folder menu for adding/editing/scanning watch folders
         Menu foldermenu = new Menu("Folders");
-        MenuItem editFolder = new MenuItem("Edit watch folders");
-        MenuItem scan = new MenuItem("Scan folders");
+        MenuItem editFolder = new MenuItem("Add music folders");
+        MenuItem scan = new MenuItem("Scan current folders");
         editFolder.setOnAction(event -> addFolder());
         scan.setOnAction(event -> scanFolder());
         foldermenu.getItems().addAll(editFolder, scan);

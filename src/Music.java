@@ -39,7 +39,7 @@ public class Music implements Runnable {
             input.close();
             if (metadata.get("title")==null || metadata.get("title").equals("")) {
                 int index;
-                while ((index = path.indexOf("/")) >= 0) {
+                while ((index = path.indexOf("\\")) >= 0) {
                     path = path.substring(index + 1);
                 }
                 this.title = path.substring(0, path.length() - 4);
@@ -80,6 +80,9 @@ public class Music implements Runnable {
         StringBuilder sb = new StringBuilder();
         sb.append(minutes);
         sb.append(":");
+        if(seconds < 10) {
+            sb.append("0");
+        }
         sb.append(seconds);
         length = sb.toString();
         setLength(length);
