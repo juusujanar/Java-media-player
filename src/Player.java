@@ -1,10 +1,9 @@
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.scene.control.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import org.apache.commons.lang.ObjectUtils;
+
+import java.util.Random;
 
 
 public class Player implements Runnable{
@@ -17,7 +16,8 @@ public class Player implements Runnable{
     private String title;
     private String artist;
     private int song_index;
-
+    private boolean shuffle = false;
+    private boolean repeat = false;
 
     Player(Label currently_playing, TableView<Music> table) {
         this.currently_playing = currently_playing;
@@ -108,12 +108,37 @@ public class Player implements Runnable{
 
     public void run(){
         Music next_song;
-        try {
-            next_song = table.getItems().get(song_index + 1);
-        } catch (IndexOutOfBoundsException e){
-            next_song = table.getItems().get(0);
-            song_index = -1;
+         if (shuffle) {
+             int nextindex;
+             do {
+                 Random random = new Random();
+                 nextindex = random.nextInt(table.getItems().size());
+             } while (song_index == nextindex);
+             next_song = table.getItems().get(song_index);
+             play(next_song.getURI(), next_song.getTitle(), next_song.getArtist(), nextindex);
+         } else if (repeat) {
+             next_song = table.getItems().get(song_index);
+             play(next_song.getURI(), next_song.getTitle(), next_song.getArtist(), song_index);
+         } else {
+            try {
+                next_song = table.getItems().get(song_index + 1);
+            } catch (IndexOutOfBoundsException e) {
+                next_song = table.getItems().get(0);
+                song_index = -1;
+            }
+            play(next_song.getURI(), next_song.getTitle(), next_song.getArtist(), song_index + 1);
         }
-        play(next_song.getPath(), next_song.getTitle(), next_song.getArtist(), song_index+1);
+    }
+
+    protected void setShuffle(CheckMenuItem shuffle, CheckMenuItem repeat) {
+        this.shuffle = true;
+        this.repeat = false;
+        repeat.setSelected(false);
+    }
+
+    protected void setRepeat(CheckMenuItem shuffle, CheckMenuItem repeat) {
+        this.repeat = true;
+        this.shuffle = false;
+        shuffle.setSelected(false);
     }
 }

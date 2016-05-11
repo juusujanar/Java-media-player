@@ -51,6 +51,13 @@ public class Main extends Application{
         exitItem.setOnAction(event -> window.close());
         filemenu.getItems().addAll(addsongItem, exitItem);
 
+        Menu playbackmenu = new Menu("Playback");
+        CheckMenuItem shuffle = new CheckMenuItem("Shuffle");
+        CheckMenuItem repeat = new CheckMenuItem("Repeat");
+        shuffle.setOnAction(event1 -> player.setShuffle(shuffle, repeat));
+        repeat.setOnAction(event1 -> player.setRepeat(shuffle, repeat));
+        playbackmenu.getItems().addAll(shuffle, repeat);
+
         // Folder menu for adding/editing/scanning watch folders
         Menu foldermenu = new Menu("Folders");
         MenuItem editFolder = new MenuItem("Edit watch folders");
@@ -61,7 +68,7 @@ public class Main extends Application{
 
         // MENUBAR CREATION
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(filemenu, foldermenu);
+        menuBar.getMenus().addAll(filemenu, foldermenu, playbackmenu);
         layout.getChildren().addAll(menuBar, gridpane);
         ColumnConstraints columnConstraints = new ColumnConstraints();  // Making table scalable
         columnConstraints.setFillWidth(true);
