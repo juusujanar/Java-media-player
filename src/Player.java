@@ -114,7 +114,7 @@ public class Player implements Runnable{
                  Random random = new Random();
                  nextindex = random.nextInt(table.getItems().size());
              } while (song_index == nextindex);
-             next_song = table.getItems().get(song_index);
+             next_song = table.getItems().get(nextindex);
              play(next_song.getURI(), next_song.getTitle(), next_song.getArtist(), nextindex);
          } else if (repeat) {
              next_song = table.getItems().get(song_index);
@@ -131,14 +131,22 @@ public class Player implements Runnable{
     }
 
     protected void setShuffle(CheckMenuItem shuffle, CheckMenuItem repeat) {
-        this.shuffle = true;
-        this.repeat = false;
-        repeat.setSelected(false);
+        if (shuffle.isSelected()) {
+            this.shuffle = true;
+            this.repeat = false;
+            repeat.setSelected(false);
+        } else {
+            this.shuffle = false;
+        }
     }
 
     protected void setRepeat(CheckMenuItem shuffle, CheckMenuItem repeat) {
-        this.repeat = true;
-        this.shuffle = false;
-        shuffle.setSelected(false);
+        if (repeat.isSelected()) {
+            this.repeat = true;
+            this.shuffle = false;
+            shuffle.setSelected(false);
+        } else {
+            this.repeat = false;
+        }
     }
 }
