@@ -11,7 +11,10 @@ import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Main extends Application{
@@ -21,7 +24,8 @@ public class Main extends Application{
     TableView<Music> table;
     public ObservableList<Music> music = FXCollections.observableArrayList();
 
-    ArrayList<String> watchFolders = new ArrayList<>();
+    private ArrayList<String> watchFolders = new ArrayList<>();
+    private ArrayList<String> musicFolders = new ArrayList<String>();
 
     public static void main(String[] args){
         launch(args);
@@ -130,9 +134,14 @@ public class Main extends Application{
 
     protected ObservableList<Music> getMusic(){
 
-        //watchFolders.add("/home/janar/Music");
-        scanFolder();
-
+        try {
+            File musicfile = new File("AddedFolders.txt");
+            Scanner sc = new Scanner(musicfile, "UTF-8");
+            while (sc.hasNextLine()) {
+                musicFolders.add(sc.nextLine());
+            }
+        } catch (IOException e) {}
+        scanFolder(musicFolders);
         return music;
     }
 
@@ -158,8 +167,33 @@ public class Main extends Application{
 
     }
 
-    public void scanFolder(){
-        for(String path : watchFolders) {
+    public void scanFolder() {
+        try {
+            PrintWriter writer = new PrintWriter("AddedFolders.txt", "UTF-8");
+            for (String path : watchFolders) {
+                writer.println(path);
+                try {
+                    File directory = new File(path);
+                    for (File file : directory.listFiles()) {
+                        if (file.getName().endsWith((".mp3"))) {
+                            music.add(new Music(file.getAbsolutePath(), file.toURI().toURL().toExternalForm(), table));
+                        }
+                    }
+                } catch (NullPointerException e) {
+                    System.out.println("One of the folders was not found: " + watchFolders.toString());
+                } catch (Exception e) {
+                    System.out.println("Application just threw up. Better find someone to clean it up.");
+                    e.printStackTrace();
+                }
+            }
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void scanFolder(ArrayList<String> folders){
+        for (String path : folders) {
             try {
                 File directory = new File(path);
                 for (File file : directory.listFiles()) {
@@ -167,15 +201,12 @@ public class Main extends Application{
                         music.add(new Music(file.getAbsolutePath(), file.toURI().toURL().toExternalForm(), table));
                     }
                 }
-            }
-            catch (NullPointerException e) {
+            } catch (NullPointerException e) {
                 System.out.println("One of the folders was not found: " + watchFolders.toString());
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Application just threw up. Better find someone to clean it up.");
                 e.printStackTrace();
             }
-
         }
     }
 
