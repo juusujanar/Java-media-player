@@ -52,10 +52,9 @@ public class Main extends Application{
         gridpane.setHgap(20);
 
         Menu filemenu = new Menu("File");                         // Making menus
-        MenuItem addsongItem = new MenuItem("Add song");
         MenuItem exitItem = new MenuItem("Exit");
         exitItem.setOnAction(event -> window.close());
-        filemenu.getItems().addAll(addsongItem, exitItem);
+        filemenu.getItems().add(exitItem);
 
         Menu playbackmenu = new Menu("Playback");
         CheckMenuItem shuffle = new CheckMenuItem("Shuffle");
