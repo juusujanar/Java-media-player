@@ -1,1 +1,12 @@
-# Java-media-player
+# MP3 player
+
+This application has been written in Java for a university project. It is designed to playback MP3 music files.
+
+Application features:
+* Simple user interface
+* Lightweight app
+* Shuffle and repeat
+* User chooses music folders and application automatically finds MP3 files
+* Volume and progress bars
+
+Authors: Janar Juusu, Andreas Baum
