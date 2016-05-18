@@ -1,4 +1,4 @@
-# MP3 player
+# AJ Music
 
 This application has been written in Java for a university project. It is designed to playback MP3 music files.
 
