@@ -41,7 +41,7 @@ public class Main extends Application{
         table = new TableView<>();
         player = new Player(currently_playing, table);
 
-        window.setTitle("Music player");
+        window.setTitle("AJ Music");
         window.getIcons().add(new Image("file:mylogo.jpg"));
 
         VBox layout = new VBox();
