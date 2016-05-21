@@ -11,3 +11,5 @@ Application features:
 * Volume and progress bars
 
 Authors: Janar Juusu, Andreas Baum
+
+Licensed under GPLv3.
