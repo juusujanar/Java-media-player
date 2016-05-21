@@ -13,3 +13,5 @@ Application features:
 Authors: Janar Juusu, Andreas Baum
 
 Licensed under GPLv3.
+
+Website: http://juusujanar.eu/musicplayer
